@@ -13,22 +13,21 @@ bool is_filename(string s) {
 }
 
 int main(int argc,char* argv[]) {
-    std::cout << "-------";
     // 处理命令行参数
     bool is_n = false;
     bool is_w = false;
     bool is_c = false;
     bool is_h = false;
-    char h_char;
+    char h_char = '\0';
     bool is_t = false;
-    char t_char;
+    char t_char = '\0';
     bool is_j = false;
-    char j_char;
+    char j_char = '\0';
     bool is_r = false;
     string filename = "";
     for (int i = 1; i < argc; i++) {
         string arg = argv[i];
-        cout << "arg: " << i << " " << arg << endl;
+        // cout << "arg: " << i << " " << arg << endl;
         if (arg.length() == 2 && arg[0] == '-') {
             if (arg[1] == 'n') {
                 if (is_n == false) {
@@ -220,14 +219,28 @@ int main(int argc,char* argv[]) {
 
     cout << "finish read words" << endl;
 
-    /*ofstream outfile;
-    outfile.open("solution.txt");*/
+    ofstream outfile;
+    outfile.open("solution.txt");
     if (is_n) {
         num_result = gen_chains_all(input_word, words.size(), result);
+        cout << num_result << endl;
+        outfile << num_result << endl;
         for (int i = 0; i < num_result; i++) {
             cout << result[i] << endl;
+            outfile << result[i] << endl;
         }
-        cout << num_result << endl;
+    } else if (is_w) {
+        num_result = gen_chain_word(input_word, words.size(), result, h_char, t_char, j_char, is_r);
+        for (int i = 0; i < num_result; i++) {
+            cout << result[i] << endl;
+            outfile << result[i] << endl;
+        }
+    } else if (is_c) {
+        num_result = gen_chain_char(input_word, words.size(), result, h_char, t_char, j_char, is_r);
+        for (int i = 0; i < num_result; i++) {
+            cout << result[i] << endl;
+            outfile << result[i] << endl;
+        }
     }
 
 
