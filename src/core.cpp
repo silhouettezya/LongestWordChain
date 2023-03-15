@@ -1,7 +1,7 @@
 //
 // Created by hp on 2023/3/8.
 //
-#define CORE
+//#define CORE
 #include "core.h"
 #include <iostream>
 #include <vector>
@@ -21,7 +21,7 @@ struct Graph {
 typedef struct Graph *Gptr;
 vector<string> strings;
 
-void init_words(const char* words[], int len){
+void init_words(char* words[], int len){
     strings.clear();
     for(int i=0;i<len;i++){
         string S = words[i];
@@ -202,7 +202,9 @@ int getMaxWordChain(Gptr graph, const int *topo, char **results,
     chain[chainIndex] = curNode;
     for (int j = 0; j < max; j++) {
         cout << strings[chain[j]] << " ";
-        results[j] = strings[chain[j]].data();
+        int len = strings[chain[j]].length();
+        results[j] = (char *)malloc((len+1)*sizeof(char));
+        strings[chain[j]].copy(results[j],len,0);
     }
     return max;
 }
@@ -262,7 +264,9 @@ int getMaxCharChain(Gptr graph, const int *topo, char **results,
     chain[chainIndex] = curNode;
     while (chainIndex >= 0) {
         cout << strings[chain[chainIndex]] << " ";
-        results[chainIndex] = strings[chain[chainIndex]].data();
+        int len = strings[chain[chainIndex]].length();
+        results[chainIndex] = (char *)malloc((len+1)*sizeof(char));
+        strings[chain[chainIndex]].copy(results[chainIndex],len,0);
         chainIndex--;
     }
     return max;
@@ -358,7 +362,9 @@ int getMaxWordChainCircle(Gptr graph, int *topo, char **results,
     cout << "chain:\n";
     for (int i = 0; i < maxlen; i++) {
         cout << strings[max[i]] << " ";
-        results[i] = strings[max[i]].data();
+        int len = strings[max[i]].length();
+        results[i] = (char *)malloc((len+1)*sizeof(char));
+        strings[max[i]].copy(results[i],len,0);
     }
     return maxlen;
 }
@@ -378,28 +384,36 @@ int getMaxCharChainCircle(Gptr graph, int *topo, char **results,
     cout << "chain:\n";
     for (int i = 0; i < maxlen; i++) {
         cout << strings[max[i]] << " ";
-        results[i] = strings[max[i]].data();
+        int len = strings[max[i]].length();
+        results[i] = (char *)malloc((len+1)*sizeof(char));
+        strings[max[i]].copy(results[i],len,0);
     }
     return maxlen;
 }
 
 int topAll = -1;
 int chains = 0;
+int rec[10001]; // 链栈
+string print_chain();
 void DFSAll(Gptr graph, int cur, char** results) {
     visited_dfs[cur] = true;
-    if(chains<20001) results[++top] = strings[cur].data();
-    if (top > 0) {
+    rec[++topAll] = cur;
+    if (topAll > 0) {
+        string s = print_chain();
+        int len = s.length();
+        results[chains] = (char *)malloc((len+1)*sizeof(char));
+        s.copy(results[chains],len,0);
         chains++;
-        results[top] = (strings[cur]+"\n").data();
     }
     for (int i = 0; i < graph->degree; i++) {
         if (graph->matrix[cur][i] && !visited_dfs[i]) {
             DFSAll(graph, i, results);
         }
     }
-    top--;
+    topAll--;
     visited_dfs[cur] = false;
 }
+
 int get_all_chain(Gptr graph, char** results) {
     for (int i = 0; i < graph->degree; i++) {
         DFSAll(graph, i, results);
@@ -407,6 +421,14 @@ int get_all_chain(Gptr graph, char** results) {
     return chains;
 }
 
+string print_chain() {
+    string s = "";
+    for (int i = 0; i < top; i++) {
+        s = s + strings[rec[i]] + " ";
+    }
+    s = s + strings[rec[top]];
+    return s;
+}
 
 /*
  * type = 0; refers to gen_chain_all;
@@ -414,7 +436,7 @@ int get_all_chain(Gptr graph, char** results) {
  * type = 2; refers to gen_chain_char;
  */
 int engine(
-        const char* words[],
+        char* words[],
         int len,
         char* result[],
         char head,
@@ -427,14 +449,14 @@ int engine(
     int* topoL = topo_check(graph, head, tail, reject, enable_loop);
     if(type == 0){
         if(graph->hasCircle){
-            // hasCirCle!!
+            // TODO hasCirCle!!
         }else{
             return get_all_chain(graph, result);
         }
     }
     else if(type == 1){
         if(!enable_loop && graph->hasCircle){
-            // hasCirCle!!
+            // TODO hasCirCle!!
         }else{
             if(!graph->hasCircle){
                 return getMaxWordChain(graph, topoL, result, head, tail, reject, enable_loop);
@@ -444,7 +466,7 @@ int engine(
         }
     }else if(type == 2){
         if(!enable_loop && graph->hasCircle){
-            // hasCirCle!!
+            // TODO hasCirCle!!
         }else{
             if(!graph->hasCircle){
                 return getMaxCharChain(graph, topoL, result, head, tail, reject, enable_loop);
@@ -456,20 +478,20 @@ int engine(
     return 0;
 }
 
-int gen_chains_all(const char* words[], int len, char* result[]){
+int gen_chains_all(char* words[], int len, char* result[]){
     return engine(words, len, result, '\0', '\0', '\0', false, 0);
 }
 
-int gen_chain_word(const char* words[], int len, char* result[], char head, char tail, char reject, bool enable_loop){
+int gen_chain_word(char* words[], int len, char* result[], char head, char tail, char reject, bool enable_loop){
     return engine(words, len, result, head, tail, reject, enable_loop, 1);
 }
 
-int gen_chain_char(const char* words[], int len, char* result[], char head, char tail, char reject, bool enable_loop){
+int gen_chain_char(char* words[], int len, char* result[], char head, char tail, char reject, bool enable_loop){
     return engine(words, len, result, head, tail, reject, enable_loop, 2);
 }
 
 
-int main() {
+/*int main() {
     int n;
     cin >> n;
     const char* words[MAX_VERTEX];
@@ -485,5 +507,5 @@ int main() {
     int ret = engine(words, n, result, head, tail, reject, enable_loop, type);
     cout << "ret: " << ret << "\n";
     return 0;
-}
+}*/
 
