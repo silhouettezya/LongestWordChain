@@ -51,13 +51,13 @@ Gptr create_graph(vector<string> Strings, int n) {
             graph->matrix[i][next] = true;
             inDegree[next] = inDegree[next] + 1;
             graph->inDegree[next] = graph->inDegree[next] + 1;
-            cout << "add " << Strings[i] << " -> " << Strings[next] << "\n";
+            cout << "add " << Strings[i] << " -> " << Strings[next] << endl;
         }
         for (auto lastV: last[f]) {
             graph->matrix[lastV][i] = true;
             inDegree[i] = inDegree[i] + 1;
             graph->inDegree[i] = graph->inDegree[i] + 1;
-            cout << "add " << Strings[lastV] << " -> " << Strings[i] << "\n";
+            cout << "add " << Strings[lastV] << " -> " << Strings[i] << endl;
         }
         first[f].insert(first[f].end(), i);
         last[l].insert(last[l].end(), i);
@@ -139,9 +139,9 @@ int *topo_check(Gptr graph, char head, char tail, char nhead, bool enable_loop) 
         ret[0] = -1;
         return ret;
     } else {
-        for (int i = 0; i < graph->degree; i++) {
+        /*for (int i = 0; i < graph->degree; i++) {
             cout << strings[ret[i]] << " ";
-        }
+        }*/
     }
     return ret;
 }
@@ -205,6 +205,7 @@ int getMaxWordChain(Gptr graph, const int *topo, char **results,
         int len = strings[chain[j]].length();
         results[j] = (char *)malloc((len+1)*sizeof(char));
         strings[chain[j]].copy(results[j],len,0);
+        *(results[j] + len)='\0';
     }
     return max;
 }
@@ -267,6 +268,7 @@ int getMaxCharChain(Gptr graph, const int *topo, char **results,
         int len = strings[chain[chainIndex]].length();
         results[chainIndex] = (char *)malloc((len+1)*sizeof(char));
         strings[chain[chainIndex]].copy(results[chainIndex],len,0);
+        *(results[chainIndex] + len)='\0';
         chainIndex--;
     }
     return max;
@@ -365,6 +367,7 @@ int getMaxWordChainCircle(Gptr graph, int *topo, char **results,
         int len = strings[max[i]].length();
         results[i] = (char *)malloc((len+1)*sizeof(char));
         strings[max[i]].copy(results[i],len,0);
+        *(results[i] + len)='\0';
     }
     return maxlen;
 }
@@ -387,6 +390,7 @@ int getMaxCharChainCircle(Gptr graph, int *topo, char **results,
         int len = strings[max[i]].length();
         results[i] = (char *)malloc((len+1)*sizeof(char));
         strings[max[i]].copy(results[i],len,0);
+        *(results[i] + len)='\0';
     }
     return maxlen;
 }
@@ -403,6 +407,7 @@ void DFSAll(Gptr graph, int cur, char** results) {
         int len = s.length();
         results[chains] = (char *)malloc((len+1)*sizeof(char));
         s.copy(results[chains],len,0);
+        *(results[chains] + len)='\0';
         chains++;
     }
     for (int i = 0; i < graph->degree; i++) {
@@ -423,10 +428,11 @@ int get_all_chain(Gptr graph, char** results) {
 
 string print_chain() {
     string s = "";
-    for (int i = 0; i < top; i++) {
+    for (int i = 0; i < topAll; i++) {
         s = s + strings[rec[i]] + " ";
     }
-    s = s + strings[rec[top]];
+    s = s + strings[rec[topAll]];
+    //cout << s << endl;
     return s;
 }
 

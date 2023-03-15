@@ -13,6 +13,7 @@ bool is_filename(string s) {
 }
 
 int main(int argc,char* argv[]) {
+    std::cout << "-------";
     // 处理命令行参数
     bool is_n = false;
     bool is_w = false;
@@ -27,7 +28,7 @@ int main(int argc,char* argv[]) {
     string filename = "";
     for (int i = 1; i < argc; i++) {
         string arg = argv[i];
-        cout << "参数： " << i << " 内容：" << arg << endl;
+        cout << "arg: " << i << " " << arg << endl;
         if (arg.length() == 2 && arg[0] == '-') {
             if (arg[1] == 'n') {
                 if (is_n == false) {
@@ -159,7 +160,7 @@ int main(int argc,char* argv[]) {
         return 0;
     }
     char c;
-    string word_table[10000];
+    string word_table[10002];
     vector<string> words;
     int word_num = 0;
     int is_word = 0;
@@ -193,17 +194,31 @@ int main(int argc,char* argv[]) {
         }
     }
     ifs.close();
+    if (is_word) {
+        int in_vector = 0;
+        for (int i = 0; i < words.size(); i++) {
+            if (words[i] == word_table[word_num]) {
+                in_vector = 1;
+            }
+        }
+        if (!in_vector) {
+            words.push_back(word_table[word_num]);
+        }
+    }
 
     char* input_word[10001];
     char* result[20001];
     int num_result;
 
     for (int i = 0; i < words.size(); i++) {
-        // cout << words[i] << endl;
+        cout << words[i] << endl;
         int len = words[i].length();
         input_word[i] = (char *)malloc((len+1)*sizeof(char));
         words[i].copy(input_word[i],len,0);
+        *(input_word[i] + len) = '\0';
     }
+
+    cout << "finish read words" << endl;
 
     /*ofstream outfile;
     outfile.open("solution.txt");*/
