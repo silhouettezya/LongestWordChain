@@ -263,14 +263,14 @@ int getMaxCharChain(Gptr graph, const int *topo, char **results,
         chainIndex++;
     }
     chain[chainIndex] = curNode;
-    int j = 0;
-    while (j <= chainIndex) {
+    int j = chainIndex;
+    while (j >= 0) {
         cout << strings[chain[j]] << " ";
         int len = strings[chain[j]].length();
-        results[j] = (char *)malloc((len+1)*sizeof(char));
-        strings[chain[j]].copy(results[j],len,0);
-        *(results[j] + len)='\0';
-        j++;
+        results[chainIndex - j] = (char *)malloc((len+1)*sizeof(char));
+        strings[chain[j]].copy(results[chainIndex - j],len,0);
+        *(results[chainIndex - j] + len)='\0';
+        j--;
     }
     return max;
 }
