@@ -217,7 +217,7 @@ int main(int argc,char* argv[]) {
         *(input_word[i] + len) = '\0';
     }
 
-    cout << "finish read words" << endl;
+    // cout << "finish read words" << endl;
 
     ofstream outfile;
     outfile.open("solution.txt");
