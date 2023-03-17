@@ -404,11 +404,13 @@ void DFSAll(Gptr graph, int cur, char** results) {
     visited_dfs[cur] = true;
     rec[++topAll] = cur;
     if (topAll > 0) {
-        string s = print_chain();
-        int len = s.length();
-        results[chains] = (char *)malloc((len+1)*sizeof(char));
-        s.copy(results[chains],len,0);
-        *(results[chains] + len)='\0';
+        if (chains < 20000) {
+            string s = print_chain();
+            int len = s.length();
+            results[chains] = (char *)malloc((len+1)*sizeof(char));
+            s.copy(results[chains],len,0);
+            *(results[chains] + len)='\0';   
+        }
         chains++;
     }
     for (int i = 0; i < graph->degree; i++) {
@@ -455,15 +457,15 @@ int engine(
     Gptr graph = create_graph(strings, len);
     int* topoL = topo_check(graph, head, tail, reject, enable_loop);
     if(type == 0){
-        if(graph->hasCircle){
-            // TODO hasCirCle!!
-        }else{
+        if (graph->hasCircle) {
+            throw logic_error("the chain has circle without -r!");
+        } else {
             return get_all_chain(graph, result);
         }
     }
     else if(type == 1){
         if(!enable_loop && graph->hasCircle){
-            // TODO hasCirCle!!
+            throw logic_error("the chain has circle without -r!");
         }else{
             if(!graph->hasCircle){
                 return getMaxWordChain(graph, topoL, result, head, tail, reject, enable_loop);
@@ -473,7 +475,7 @@ int engine(
         }
     }else if(type == 2){
         if(!enable_loop && graph->hasCircle){
-            // TODO hasCirCle!!
+            throw logic_error("the chain has circle without -r!");
         }else{
             if(!graph->hasCircle){
                 return getMaxCharChain(graph, topoL, result, head, tail, reject, enable_loop);
