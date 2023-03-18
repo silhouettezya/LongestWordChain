@@ -4,11 +4,6 @@ import axios from 'axios'
 import { ElMessage } from 'element-plus'
 
 
-const ffi = require('ffi')
-const corePtr = ffi.DynamicLibrary(path.resolve('./core.dll')).get('gui_engine')
-const core = ffi.ForeignFunction(corePtr, 'string', ['string', 'int', 'char', 'char', 'char', 'bool'])
-
-
 export default{
   name: 'App',
   data: ()=>({
