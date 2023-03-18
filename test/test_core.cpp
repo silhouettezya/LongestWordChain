@@ -218,6 +218,18 @@ TEST(engine, example_hasCircle3) {
     }
 }
 
+TEST(engine, example_hasCircle4) {
+const char* words[] = {"element", "heaven", "table", "teach", "talk"};
+const char* ans[] = {"table", "element", "teach", "heaven"};
+try {
+char** result = (char**)malloc(10000);
+int out_len = engine(words,5, result, 0, 0, 0, false, 2);
+}
+catch(std::logic_error const& e) {
+ASSERT_EQ(strcmp("the chain has circle without -r!", e.what()), 0);
+}
+}
+
 TEST(engine, example_wrong_type) {
     const char* words[] = {"element", "heaven", "table", "teach", "talk"};
     char** result = (char**)malloc(10000);
