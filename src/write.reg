@@ -1,0 +1,10 @@
+Windows Registry Editor Version 5.00
+[HKEY_CLASSES_ROOT\Write]
+@="URL:Write Protocol Handler"
+"URL Protocol"=""
+[HKEY_CLASSES_ROOT\Write\DefaultIcon]
+@="E:\\StudyingFile\\Computer\\Software Engineering\\Pair Homework\\frontVue\\front\\bin\\1.exe"
+[HKEY_CLASSES_ROOT\Write\shell]
+[HKEY_CLASSES_ROOT\Write\shell\open]
+[HKEY_CLASSES_ROOT\Write\shell\open\command]
+@="\"E:\\StudyingFile\\Computer\\Software Engineering\\Pair Homework\\frontVue\\front\\bin\\1.exe\" \"%1\""
