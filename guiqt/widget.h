@@ -1,0 +1,33 @@
+#ifndef WIDGET_H
+#define WIDGET_H
+
+#include <QWidget>
+#include "D:\CDLL\core.h"
+#include <QLibrary>
+#include <QTimer>
+QT_BEGIN_NAMESPACE
+namespace Ui { class Widget; }
+QT_END_NAMESPACE
+
+class Widget : public QWidget
+{
+    Q_OBJECT
+
+public:
+    Widget(QWidget *parent = nullptr);
+    ~Widget();
+
+private slots:
+    void on_loadFile_clicked();
+    void loadFile();
+    void startCalc();
+    void saveFile();
+    void on_save_clicked();
+    void on_begin_clicked();
+
+private:
+    Ui::Widget *ui;
+    int Qstring2words(QString s, char* word_buf, char** words);
+    QTimer *myTimer;
+};
+#endif // WIDGET_H
