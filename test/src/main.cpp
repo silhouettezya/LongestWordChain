@@ -12,24 +12,24 @@ bool is_filename(string s) {
     return (len > 4 && s[len - 4] == '.' && s[len - 3] == 't' && s[len - 2] == 'x' && s[len - 1] == 't');
 }
 
-int main_serve(int argc,char* argv[]);
+int main_serve(int argc, const char* argv[]);
 
-int main(int argc,char* argv[]) {
-    try {
-        main_serve(argc, argv);
-    } catch (invalid_argument const& e) {
-        cerr << e.what() << endl;
-    }
-    catch (logic_error const& e) {
-        cerr << e.what() << endl;
-    }
-    catch (runtime_error const& e) {
-        cerr << e.what() << endl;
-    }
-    return 0;
-}
+//int main(int argc,char* argv[]) {
+//    try {
+//        main_serve(argc, (const char**) argv);
+//    } catch (invalid_argument const& e) {
+//        cerr << e.what() << endl;
+//    }
+//    catch (logic_error const& e) {
+//        cerr << e.what() << endl;
+//    }
+//    catch (runtime_error const& e) {
+//        cerr << e.what() << endl;
+//    }
+//    return 0;
+//}
 
-int main_serve(int argc,char* argv[]) {
+int main_serve(int argc, const char* argv[]) {
     // 处理命令行参数
     bool is_n = false;
     bool is_w = false;
@@ -225,7 +225,7 @@ int main_serve(int argc,char* argv[]) {
     ofstream outfile;
     outfile.open("solution.txt");
     if (is_n) {
-        num_result = gen_chains_all(input_word, words.size(), result);
+        num_result = gen_chains_all((const char**)input_word, words.size(), result);
         if (num_result > 20000) {
             throw runtime_error("results are more than 20000 chains!");
         }
@@ -236,13 +236,13 @@ int main_serve(int argc,char* argv[]) {
             outfile << result[i] << endl;
         }
     } else if (is_w) {
-        num_result = gen_chain_word(input_word, words.size(), result, h_char, t_char, j_char, is_r);
+        num_result = gen_chain_word((const char**)input_word, words.size(), result, h_char, t_char, j_char, is_r);
         for (int i = 0; i < num_result; i++) {
             cout << result[i] << endl;
             outfile << result[i] << endl;
         }
     } else if (is_c) {
-        num_result = gen_chain_char(input_word, words.size(), result, h_char, t_char, j_char, is_r);
+        num_result = gen_chain_char((const char**)input_word, words.size(), result, h_char, t_char, j_char, is_r);
         for (int i = 0; i < num_result; i++) {
             cout << result[i] << endl;
             outfile << result[i] << endl;
