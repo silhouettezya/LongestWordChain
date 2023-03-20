@@ -141,7 +141,7 @@ export default{
       }
       this.start = true;
     },
-    solve() {
+   /* solve() {
       this.calculating = true
       this.outputText = ''
       this.runMessage = ''
@@ -163,7 +163,7 @@ export default{
             this.calculating = false
           }
       )
-    },
+    },*/
   },
 }
 
